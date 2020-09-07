@@ -1,6 +1,7 @@
 package Router
 
 import (
+	"Golang_cql/Database"
 	"Golang_cql/pkg/Users"
 	"fmt"
 	"log"
@@ -10,6 +11,8 @@ import (
 )
 
 func StartServer() *chi.Mux {
+
+	Database.SetupDBConnection()
 	router := chi.NewRouter()
 	router.Mount("/api/users", Users.UserRoutes())
 	fmt.Println("server is listening to port 8080")
