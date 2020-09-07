@@ -1,6 +1,7 @@
 package Database
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/gocql/gocql"
@@ -12,6 +13,7 @@ type DBConnection struct {
 }
 
 var connection DBConnection
+var name string
 
 func SetupDBConnection() {
 	connection.cluster = gocql.NewCluster("127.0.0.1")
@@ -26,5 +28,15 @@ func ExecuteQuery(query string, values ...interface{}) {
 	if err := connection.session.Query(query).Bind(values...).Exec(); err != nil {
 		log.Fatal(err)
 	}
+
+}
+
+func ExecuteQuerynew(query string) string {
+
+	if err := connection.session.Query(query, "wavy@gmail.com").Consistency(gocql.One).Scan(&name); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(name)
+	return name
 
 }

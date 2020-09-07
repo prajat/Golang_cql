@@ -11,7 +11,9 @@ var user User
 
 func getHandler(w http.ResponseWriter, r *http.Request) {
 
-	json.NewEncoder(w).Encode("you got user 1")
+	text := getUser()
+	json.NewEncoder(w).Encode(text)
+	json.NewEncoder(w).Encode("you got the name of user 1")
 }
 func postHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -25,4 +27,13 @@ func addUser(user *User) {
 
 	query := `INSERT INTO users (first_name,last_name,email) VALUES (?,?,?)`
 	Database.ExecuteQuery(query, user.FirstName, user.LastName, user.Email)
+
+}
+
+//for excecute the select query
+func getUser() string {
+
+	query := `SELECT first_name FROM users WHERE email=?`
+	return Database.ExecuteQuerynew(query)
+
 }
